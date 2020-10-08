@@ -1,0 +1,39 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
+Layout:
+
+  # GUI Title
+  Title: 'Rewards'
+
+  # GUI size (9, 18, 27, 36, 45, 54)
+  Size: 54
+
+  # GUI items
+  Items:
+
+    # Reward item
+    Reward:
+
+      # Each line for rewards lore display
+      DisplayLine: '&7- &b%reward_name%'
+
+
+    # Close item
+    Close:
+      Name: '&9Close'
+      Material: 'BOOK'
+
+      # The close button will always be placed in the last row, so the slot is calculated with (1-9) slot
+      Slot: 5
+
+      Lore:
+        - '&7Click to close'
+        - '&7this menu'

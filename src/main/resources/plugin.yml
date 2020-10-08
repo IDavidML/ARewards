@@ -1,0 +1,7 @@
+name: ARewards
+version: ${project.version}
+main: me.davidml16.arewards.Main
+depend: [HolographicDisplays, ProtocolLib]
+softdepend: [PlaceholderAPI]
+authors: [DavidML16]
+api-version: 1.13

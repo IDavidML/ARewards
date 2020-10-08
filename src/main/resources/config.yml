@@ -1,0 +1,37 @@
+#-------------------------#
+#                         #
+#   NAME:     AREWARDS    #
+#   AUTHOR:   DavidML16   #
+#                         #
+#-------------------------#
+
+
+# Language of plugin
+# Availables by default: EN, ES
+Language: EN
+
+
+# Command name, default: /rewards
+# For the changes to take effect, a full server restart is required
+Commands:
+    Rewards: rewards
+
+
+# Database details
+MySQL:
+    Enabled: false
+    Host: localhost
+    Port: 3306
+    User: root
+    Password: example
+    Database: arewards
+
+
+# Change hologram settings
+# Update interval default: 30 (1.5s)
+# Color animation default colors: &f and &c
+Holograms:
+    UpdateInterval: 30
+    ColorAnimation:
+        - '&f'
+        - '&c'

@@ -1,0 +1,52 @@
+# 
+# 
+# This is the messsages file.
+# You can change any messages that are in this file
+# 
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+# 	
+#
+
+Prefix: '&6&lARewards &l&o&f>>&r'
+
+Times:
+  Days: days
+  Day: day
+  Hours: hours
+  Hour: hour
+  Minutes: minutes
+  Minute: minute
+  Seconds: seconds
+  Second: second
+
+Strings:
+  Rewards: rewards
+  Reward: reward
+
+Commands:
+  NoPerms: '%prefix% &cYou dont have permissions to use this command!'
+  Reload: '%prefix% &aPlugin reloaded with no errors!'
+  Balance: '&aYou actually have &6%rewards_available% &a%rewards_string% to collect!'
+  Clear: '%prefix% &aCleared reward cooldowns from &6%player%'
+
+Rewards:
+  Cooldown: '&cYou cannot claim this reward for %cooldown%!'
+  Reward: '&b+%reward_name%'
+
+  # You can use %center% tag here, to center message in chat.
+  Claimed:
+    - ''
+    - '&aClaimed reward!'
+    - '%rewards%'
+    - ''
+
+
+Holograms:
+  RewardsAvailable:
+    - '&e&lReward Chest'
+    - '&dClick to open'
+    - '%blink%%rewards_available% %rewards_string%!'
+  NoRewardsAvailable:
+    - '&e&lReward Chest'
+    - '&dClick to open'
