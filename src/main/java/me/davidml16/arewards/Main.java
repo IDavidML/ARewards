@@ -15,6 +15,7 @@ import me.davidml16.arewards.handlers.*;
 import me.davidml16.arewards.handlers.PluginHandler;
 import me.davidml16.arewards.tasks.CollectedRewardTask;
 import me.davidml16.arewards.tasks.HologramTask;
+import me.davidml16.arewards.tasks.LiveGuiTask;
 import me.davidml16.arewards.utils.Utils;
 import me.davidml16.arewards.utils.ConfigUpdater;
 import org.bukkit.Bukkit;
@@ -39,6 +40,7 @@ public class Main extends JavaPlugin {
 
     private HologramTask hologramTask;
     private CollectedRewardTask collectedRewardTask;
+    private LiveGuiTask liveGuiTask;
 
     private LanguageHandler languageHandler;
     private DatabaseHandler databaseHandler;
@@ -128,11 +130,14 @@ public class Main extends JavaPlugin {
         collectedRewardTask = new CollectedRewardTask(this);
         collectedRewardTask.start();
 
-        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
-
         layoutHandler = new LayoutHandler(this);
 
         rewardsGUI = new Rewards_GUI(this);
+
+        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
+        liveGuiTask = new LiveGuiTask(this);
+        if(isLiveGuiUpdates())
+            liveGuiTask.start();
 
         setupGUI = new Setup_GUI(this);
         setupGUI.loadGUI();
@@ -239,6 +244,8 @@ public class Main extends JavaPlugin {
 
     public CollectedRewardTask getCollectedRewardTask() { return collectedRewardTask; }
 
+    public LiveGuiTask getLiveGuiTask() { return liveGuiTask; }
+
     public int getPlayerCount() { return playerCount; }
 
     public void setPlayerCount(int playerCount) { this.playerCount = playerCount; }
@@ -246,6 +253,10 @@ public class Main extends JavaPlugin {
     public boolean playerHasPermission(Player p, String permission) {
         return p.hasPermission(permission) || p.isOp();
     }
+
+    public boolean isLiveGuiUpdates() { return settings.get("LiveGuiUpdates"); }
+
+    public void setLiveGuiUpdates(boolean value) { settings.put("LiveGuiUpdates", value); }
 
     public CommandMap getCommandMap() {
         return commandMap;

@@ -22,8 +22,11 @@ public class PluginHandler {
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
 
+        main.setLiveGuiUpdates(main.getConfig().getBoolean("LiveGuiUpdates"));
+
         main.getHologramTask().stop();
         main.getCollectedRewardTask().stop();
+        main.getLiveGuiTask().stop();
 
         main.getHologramHandler().removeHolograms();
         main.getLanguageHandler().pushMessages();
@@ -39,6 +42,8 @@ public class PluginHandler {
 
         main.getHologramTask().start();
         main.getCollectedRewardTask().start();
+        if(main.isLiveGuiUpdates())
+            main.getLiveGuiTask().start();
     }
 
 }

@@ -27,6 +27,10 @@ MySQL:
     Database: arewards
 
 
+# Enable/disable if you want cubelet open gui updates in realtime.
+LiveGuiUpdates: true
+
+
 # Change hologram settings
 # Update interval default: 30 (1.5s)
 # Color animation default colors: &f and &c

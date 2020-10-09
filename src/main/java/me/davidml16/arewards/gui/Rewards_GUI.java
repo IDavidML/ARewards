@@ -72,10 +72,6 @@ public class Rewards_GUI implements Listener {
 
                     gui.setItem(rewardType.getSlot(), getRewardItem(p, guiLayout, rewardType, rewardCollecteds));
 
-                else
-
-                    gui.addItem(getRewardItem(p, guiLayout, rewardType, rewardCollecteds));
-
             }
 
             Bukkit.getScheduler().runTask(main, () -> {

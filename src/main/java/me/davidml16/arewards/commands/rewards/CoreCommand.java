@@ -23,6 +23,7 @@ public class CoreCommand extends Command {
     private final ExecuteReload executeReload = new ExecuteReload(main);
     private final ExecuteSetup executeSetup = new ExecuteSetup(main);
     private final ExecuteClear executeClear = new ExecuteClear(main);
+    private final ExecuteMenu executeMenu = new ExecuteMenu(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -51,6 +52,8 @@ public class CoreCommand extends Command {
         }
 
         switch (args[0]) {
+            case "menu":
+                return executeMenu.executeCommand(sender, label, args);
             case "help":
                 return sendCommandHelp(sender, label);
             case "chest":
@@ -73,19 +76,40 @@ public class CoreCommand extends Command {
 
     private boolean sendCommandHelp(CommandSender sender, String label) {
         if(sender instanceof Player) {
-            if (!main.playerHasPermission((Player) sender, Constants.ADMIN_PERMISSION)) return false;
+
+            if (main.playerHasPermission((Player) sender, Constants.OPEN_MENU_PERMISSION) || main.playerHasPermission((Player) sender, Constants.ADMIN_PERMISSION)) {
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " menu"));
+                sender.sendMessage("");
+            }
+
+            if (main.playerHasPermission((Player) sender, Constants.ADMIN_PERMISSION)) {
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " clear [player]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " chest [create/remove/edit]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
+                sender.sendMessage("");
+            }
+
+        } else {
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " menu"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " clear [player]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " chest [create/remove/edit]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
+            sender.sendMessage("");
         }
 
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " clear [player]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " chest [create/remove/edit]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
-        sender.sendMessage("");
         return true;
     }
 
@@ -101,8 +125,12 @@ public class CoreCommand extends Command {
         List<String> auto = new ArrayList<String>();
 
         if (args.length == 1) {
-            if (main.playerHasPermission(p, Constants.ADMIN_PERMISSION)) {
+            if (main.playerHasPermission(p, Constants.OPEN_MENU_PERMISSION) || main.playerHasPermission(p, Constants.ADMIN_PERMISSION)) {
+                list.add("menu");
                 list.add("help");
+            }
+
+            if (main.playerHasPermission(p, Constants.ADMIN_PERMISSION)) {
                 list.add("clear");
                 list.add("chest");
                 list.add("type");
