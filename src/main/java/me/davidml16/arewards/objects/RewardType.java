@@ -33,6 +33,8 @@ public class RewardType {
     private List<String> description;
     private List<Reward> rewards;
 
+    private boolean needVote;
+
     public RewardType(Main main, String id, String name, int slot) {
         this.main = main;
         this.id = id;
@@ -121,6 +123,10 @@ public class RewardType {
 
     public void setCooldownString(String cooldownString) { this.cooldownString = cooldownString; }
 
+    public boolean isNeedVote() { return needVote; }
+
+    public void setNeedVote(boolean needVote) { this.needVote = needVote; }
+
     @Override
     public String toString() {
         return "RewardType{" +
@@ -142,7 +148,7 @@ public class RewardType {
 
         config.set("type.cooldown", getCooldownString());
 
-        config.set("type.require_permission.enabled", isRequirePermission());
+        config.set("type.require_vote.enabled", isNeedVote());
 
         config.set("type.rewards", new ArrayList<>());
         if (config.contains("type.rewards")) {

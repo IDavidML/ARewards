@@ -132,6 +132,10 @@ public class RewardTypeHandler {
                         ));
                     }
 
+                    if (!config.contains("type.require_vote")) {
+                        config.set("type.require_vote.enabled", false);
+                    }
+
                     if (!config.contains("type.description")) {
                         List<String> lore = Arrays.asList(
                                 "&7Claim a example reward"
@@ -264,6 +268,8 @@ public class RewardTypeHandler {
                     rewardType.setRequirePermission(config.getBoolean("type.require_permission.enabled"));
 
                     rewardType.setNoPermissionMessage(config.getStringList("type.require_permission.message"));
+
+                    rewardType.setNeedVote(config.getBoolean("type.require_vote.enabled"));
 
                     rewardType.setDescription(config.getStringList("type.description"));
 

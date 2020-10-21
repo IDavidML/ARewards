@@ -72,7 +72,7 @@ public class EditSettings_GUI implements Listener {
 
         RewardType type = main.getRewardTypeHandler().getTypeBydId(id);
 
-        gui.setItem(11, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aSlot"))
+        gui.setItem(10, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aSlot"))
                 .setLore(
                         "",
                         Utils.translate(" &7Change the slot of this "),
@@ -84,7 +84,7 @@ public class EditSettings_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(13, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
+        gui.setItem(11, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
                 .setLore(
                         "",
                         Utils.translate(" &7Change the cooldown "),
@@ -116,6 +116,28 @@ public class EditSettings_GUI implements Listener {
                             Utils.translate(" &7to claim this reward "),
                             "",
                             Utils.translate(" &7Permission: &6" + Constants.REWARD_PERMISSION.replaceAll("%id%", type.getId().toLowerCase()) + " "),
+                            "",
+                            Utils.translate("&eClick to enable! ")
+                    )
+                    .toItemStack());
+        }
+
+        if(type.isNeedVote()) {
+            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if you need vote "),
+                            Utils.translate(" &7to claim this reward "),
+                            "",
+                            Utils.translate("&eClick to disable! ")
+                    )
+                    .toItemStack());
+        } else {
+            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if you need vote "),
+                            Utils.translate(" &7to claim this reward "),
                             "",
                             Utils.translate("&eClick to enable! ")
                     )
@@ -159,7 +181,7 @@ public class EditSettings_GUI implements Listener {
 
         RewardType type = main.getRewardTypeHandler().getTypeBydId(id);
 
-        gui.setItem(11, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aSlot"))
+        gui.setItem(10, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aSlot"))
                 .setLore(
                         "",
                         Utils.translate(" &7Change the slot of this "),
@@ -171,7 +193,7 @@ public class EditSettings_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(13, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
+        gui.setItem(11, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
                 .setLore(
                         "",
                         Utils.translate(" &7Change the cooldown "),
@@ -209,6 +231,28 @@ public class EditSettings_GUI implements Listener {
                     .toItemStack());
         }
 
+        if(type.isNeedVote()) {
+            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if you need vote "),
+                            Utils.translate(" &7to claim this reward "),
+                            "",
+                            Utils.translate("&eClick to disable! ")
+                    )
+                    .toItemStack());
+        } else {
+            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if you need vote "),
+                            Utils.translate(" &7to claim this reward "),
+                            "",
+                            Utils.translate("&eClick to enable! ")
+                    )
+                    .toItemStack());
+        }
+
         if (!opened.containsKey(p.getUniqueId())) {
             p.openInventory(gui);
         } else {
@@ -240,11 +284,11 @@ public class EditSettings_GUI implements Listener {
 
             RewardType rewardType = main.getRewardTypeHandler().getTypeBydId(opened.get(p.getUniqueId()));
 
-            if (slot == 11) {
+            if (slot == 10) {
                 p.closeInventory();
                 new SlotMenu(main).getConversation(p, rewardType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 13) {
+            } else if (slot == 11) {
                 p.closeInventory();
                 new CooldownMenu(main).getConversation(p, rewardType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
@@ -253,6 +297,11 @@ public class EditSettings_GUI implements Listener {
                 rewardType.save();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(rewardType.getId());
+            } else if (slot == 16) {
+                    rewardType.setNeedVote(!rewardType.isNeedVote());
+                    rewardType.save();
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                    reloadGUI(rewardType.getId());
             } else if (slot == 31) {
                 main.getSetupGUI().open(p, rewardType.getId());
             }

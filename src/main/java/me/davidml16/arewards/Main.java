@@ -8,6 +8,7 @@ import me.davidml16.arewards.database.DatabaseHandler;
 import me.davidml16.arewards.database.types.Database;
 import me.davidml16.arewards.events.Event_Interact;
 import me.davidml16.arewards.events.Event_JoinQuit;
+import me.davidml16.arewards.events.Event_Vote;
 import me.davidml16.arewards.gui.*;
 import me.davidml16.arewards.gui.rewards.EditRewardItems_GUI;
 import me.davidml16.arewards.gui.rewards.EditRewards_GUI;
@@ -51,6 +52,7 @@ public class Main extends JavaPlugin {
     private HologramHandler hologramHandler;
     private GUIHandler guiHandler;
     private LayoutHandler layoutHandler;
+    private TransactionHandler transactionHandler;
 
     private PluginHandler pluginHandler;
 
@@ -67,7 +69,7 @@ public class Main extends JavaPlugin {
 
     private CommandMap commandMap;
 
-    private List<String> templates = Arrays.asList("daily", "iron", "lapiz", "gold", "diamond", "emerald", "obsidian");
+    private List<String> templates = Arrays.asList("daily", "iron", "lapiz", "gold", "diamond", "emerald", "obsidian", "vote");
 
     @Override
     public void onEnable() {
@@ -102,6 +104,8 @@ public class Main extends JavaPlugin {
         databaseHandler = new DatabaseHandler(this);
         databaseHandler.openConnection();
         databaseHandler.getDatabase().loadTables();
+
+        transactionHandler = new TransactionHandler(this);
 
         rewardChestHandler = new RewardChestHandler(this);
         rewardChestHandler.loadChests();
@@ -210,6 +214,8 @@ public class Main extends JavaPlugin {
         return databaseHandler.getDatabase();
     }
 
+    public TransactionHandler getTransactionHandler() { return transactionHandler; }
+
     public DatabaseHandler getDatabase() { return databaseHandler; }
 
     public PlayerDataHandler getPlayerDataHandler() { return playerDataHandler; }
@@ -279,6 +285,10 @@ public class Main extends JavaPlugin {
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("Votifier"))
+            Bukkit.getPluginManager().registerEvents(new Event_Vote(this), this);
+
     }
 
 }

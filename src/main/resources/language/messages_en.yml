@@ -34,13 +34,26 @@ Rewards:
   Cooldown: '&cYou cannot claim this reward for %cooldown%!'
   Reward: '&b+%reward_name%'
 
-  # You can use %center% tag here, to center message in chat.
+  # You can use here %center% tag here, to center message in chat.
   Claimed:
     - ''
     - '&aClaimed reward!'
     - '%rewards%'
     - ''
+  Voted:
+    - ''
+    - '&6Thanks for voting! Here is your reward!'
+    - '&aClaimed reward!'
+    - '%rewards%'
+    - ''
 
+# You can use here %center% tag here, to center message in chat.
+VoteLinks:
+  - ''
+  - '%center% &aVote for us every &c&l24 hours &ato claim a reward! '
+  - ''
+  - '%center% &6https://vote.example.com '
+  - ''
 
 Holograms:
   RewardsAvailable:

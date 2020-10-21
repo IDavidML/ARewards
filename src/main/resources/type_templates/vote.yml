@@ -1,17 +1,18 @@
 type:
-  name: '&1&lLapiz Rank &e&lWeekly Reward'
-  cooldown: 1w
-  slot: 29
+  name: '&e&lVote reward'
+  cooldown: 24h
+  slot: 13
   description:
-  - '&7Claim Lapiz rank''s weekly Cubelet.'
+  - '&7Vote for the server every day for a'
+  - '&7reward.'
   require_permission:
-    enabled: true
-    permission: arewards.rewards.lapiz
+    enabled: false
+    permission: arewards.rewards.daily
     message:
-    - '&cYou need at least Lapiz to be able to claim this reward!'
+    - '&cYou need at least Example to be able to claim this reward!'
     - '&bPurchase ranks at &6store.example.net'
   require_vote:
-    enabled: false
+    enabled: true
   lore:
     available:
     - '%description%'
@@ -33,15 +34,19 @@ type:
     - '&5Rewards:'
     - '%rewards%'
     - ''
-    - '&cYou need at least &1Lapiz &cto be able to claim this reward!'
+    - '&cYou need at least &7Iron &cto be able to claim this reward!'
     - '&bPurchase ranks at &6store.example.net'
   icon:
     available:
-      item: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmQ4NDhkYzZmNjk0Y2JmMzU0NDE3MjJiMWEyN2ExOTVkYTU2ZTQ5NjAyMzE4MjRmZDdlYzViMTMxNWNjMmEifX19
+      item: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU3NDI0NzVlZTVhZDViZWYzOThiYjQxOTQzYTUxNWRjYWE3N2RjZDcyMjI4YjUxOWVmNjljM2FhODZjNCJ9fX0=
     cooldown:
       item: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzZkMWZhYmRmM2UzNDI2NzFiZDlmOTVmNjg3ZmUyNjNmNDM5ZGRjMmYxYzllYThmZjE1YjEzZjFlN2U0OGI5In19fQ==
   rewards:
     reward_0:
-      name: 1 Cubelet
+      name: 200 Loot points
       command:
-      - cubelets give %player% normal 1
+      - points give %player% 200
+    reward_1:
+      name: 300 Experience
+      command:
+      - xp add %player% 300

@@ -106,55 +106,18 @@ public class Rewards_GUI implements Listener {
 
             switch (Objects.requireNonNull(action)) {
                 case "claim":
-
-                    RewardCollected rewardCollected = new RewardCollected(p.getUniqueId(), rewardID);
-                    try {
-                        main.getDatabaseHandler().addRewardCollected(rewardCollected.getUuid(), rewardCollected.getRewardID(), rewardCollected.getExpire());
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    main.getPlayerDataHandler().getData(p).getRewards().add(rewardCollected);
-
-                    main.getRewardHandler().giveReward(p, main.getRewardTypeHandler().getTypeBydId(rewardID));
-
-                    sendClaimedMessage(p, rewardType);
-
+                    main.getTransactionHandler().claimReward(p, rewardType, false);
                     main.getHologramHandler().reloadHolograms(p);
-
                     open(p);
-
+                    break;
+                case "vote":
+                    main.getTransactionHandler().sendVoteLinks(p);
                     break;
                 case "cooldown":
-
-                    Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-
-                        Optional<RewardCollected> rewards = main.getPlayerDataHandler().getData(p).getRewards()
-                                .stream().filter(rc -> rc.getRewardID().equalsIgnoreCase(rewardType.getId())).findFirst();
-
-                        if (rewards.isPresent()) {
-
-                            RewardCollected rewardCollected1 = rewards.get();
-
-                            String cooldownMessage = main.getLanguageHandler().getMessage("Rewards.Cooldown");
-                            cooldownMessage = cooldownMessage.replaceAll("%cooldown%",
-                                    TimeUtils.millisToLongDHMS(rewardCollected1.getExpire() - System.currentTimeMillis()));
-
-                            String finalCooldownMessage = cooldownMessage;
-                            Bukkit.getScheduler().runTask(main, () -> {
-                                p.sendMessage(Utils.translate(finalCooldownMessage));
-                            });
-
-                        }
-
-                    });
-
+                    main.getTransactionHandler().cooldownReward(p, rewardType);
                     break;
                 case "no_permission":
-
-                    for(String line : rewardType.getNoPermissionMessage()) {
-                        p.sendMessage(Utils.translate(line));
-                    }
-
+                    main.getTransactionHandler().noPermissionReward(p, rewardType);
                     break;
             }
 
@@ -228,7 +191,10 @@ public class Rewards_GUI implements Listener {
                     .setLore(lore)
                     .toItemStack();
 
-            itemStack = NBTEditor.set(itemStack, "claim", "action");
+            if(!rewardType.isNeedVote())
+                itemStack = NBTEditor.set(itemStack, "claim", "action");
+            else
+                itemStack = NBTEditor.set(itemStack, "vote", "action");
             itemStack = NBTEditor.set(itemStack, rewardType.getId(), "rewardID");
 
             return itemStack;
@@ -253,35 +219,15 @@ public class Rewards_GUI implements Listener {
                     .setLore(lore)
                     .toItemStack();
 
-            itemStack = NBTEditor.set(itemStack, "cooldown", "action");
+            if(!rewardType.isNeedVote())
+                itemStack = NBTEditor.set(itemStack, "cooldown", "action");
+            else
+                itemStack = NBTEditor.set(itemStack, "vote", "action");
             itemStack = NBTEditor.set(itemStack, rewardType.getId(), "rewardID");
 
             return itemStack;
 
         }
-
-    }
-
-    private void sendClaimedMessage(Player player, RewardType rewardType) {
-
-        List<String> rewardsLore = new ArrayList<>();
-        for(Reward reward : rewardType.getRewards()) {
-            rewardsLore.add(Utils.translate(main.getLanguageHandler().getMessage("Rewards.Reward").replaceAll("%reward_name%", reward.getName())));
-        }
-
-        List<String> lore = new ArrayList<>();
-        for (String line : main.getLanguageHandler().getMessageList("Rewards.Claimed")) {
-            if(!line.contains("%rewards%"))
-                lore.add(Utils.translate(line.replaceAll("%center%", "")));
-            else
-                lore.addAll(rewardsLore);
-        }
-
-        for (String line : lore)
-            if(!line.contains("%center%"))
-                player.sendMessage(Utils.translate(line));
-            else
-                player.sendMessage(Utils.translate(MessageUtils.centeredMessage(line)));
 
     }
 

@@ -11,6 +11,8 @@ type:
     message:
     - '&cYou need at least Obsidian to be able to claim this reward!'
     - '&bPurchase ranks at &6store.example.net'
+  require_vote:
+    enabled: false
   lore:
     available:
     - '%description%'
