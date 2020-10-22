@@ -43,7 +43,7 @@ public class RewardChestHandler {
     }
 
     public void createChest(Location loc, double blockHeight) {
-        RewardChest box = new RewardChest(loc, blockHeight);
+        RewardChest box = new RewardChest(loc.getWorld().getName(), loc, blockHeight);
         chests.put(loc, box);
         main.getHologramHandler().loadHolograms(box);
 
@@ -155,7 +155,7 @@ public class RewardChestHandler {
                         blockHeight = config.getDouble("locations." + i + ".blockHeight");
 
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-                    chests.put(loc, new RewardChest(loc, blockHeight));
+                    chests.put(loc, new RewardChest(world, loc, blockHeight));
                 }
             }
 
@@ -163,7 +163,7 @@ public class RewardChestHandler {
             int i = 1;
             for(RewardChest bx : chests.values()) {
                 if(bx.getLocation().getWorld() == null) continue;
-                config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
+                config.set("locations." + i + ".world", bx.getWorldName());
                 config.set("locations." + i + ".x", bx.getLocation().getBlockX());
                 config.set("locations." + i + ".y", bx.getLocation().getBlockY());
                 config.set("locations." + i + ".z", bx.getLocation().getBlockZ());

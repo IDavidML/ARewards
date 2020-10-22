@@ -124,8 +124,6 @@ public class Main extends JavaPlugin {
         hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
         hologramHandler.loadHolograms();
 
-        settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
-
         playerDataHandler.loadAllPlayerData();
 
         hologramTask = new HologramTask(this);

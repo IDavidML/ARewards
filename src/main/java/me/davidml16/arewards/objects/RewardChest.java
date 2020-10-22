@@ -8,16 +8,22 @@ import java.util.UUID;
 
 public class RewardChest {
 
+    private String worldName;
     private Location location;
 
     private double blockHeight;
     private HashMap<UUID, Hologram> holograms;
 
-    public RewardChest(Location location, double blockHeight) {
+    public RewardChest(String worldName, Location location, double blockHeight) {
+        this.worldName = worldName;
         this.location = location;
         this.holograms = new HashMap<>();
         this.blockHeight = blockHeight;
     }
+
+    public String getWorldName() { return worldName; }
+
+    public void setWorldName(String worldName) { this.worldName = worldName; }
 
     public Location getLocation() {
         return location;
