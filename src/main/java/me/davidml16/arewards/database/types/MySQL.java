@@ -74,14 +74,19 @@ public class MySQL implements Database {
     }
 
     public void loadTables() {
+        runStatement("CREATE TABLE IF NOT EXISTS ar_rewards (`UUID` varchar(40) NOT NULL, `rewardID` varchar(40) NOT NULL, `expire` bigint NOT NULL DEFAULT 0, `oneTime` BOOLEAN NOT NULL DEFAULT false, PRIMARY KEY (`UUID`, `rewardID`));");
+        runStatement("ALTER TABLE ar_rewards ADD `oneTime` BOOLEAN NOT NULL DEFAULT false");
+        runStatement("CREATE TABLE IF NOT EXISTS ar_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), PRIMARY KEY (`UUID`));");
+    }
+
+    private void runStatement(String query) {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
             connection = hikari.getConnection();
-            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ar_rewards (`UUID` varchar(40) NOT NULL, `rewardID` varchar(40) NOT NULL, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `rewardID`));");
+            statement = connection.prepareStatement(query);
             statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ignored) {
         } finally {
             if(statement != null) {
                 try {
@@ -98,33 +103,7 @@ public class MySQL implements Database {
                 }
             }
         }
-
-        PreparedStatement statement2 = null;
-        Connection connection2 = null;
-        try {
-            connection2 = hikari.getConnection();
-            statement2 = connection2.prepareStatement("CREATE TABLE IF NOT EXISTS ar_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), PRIMARY KEY (`UUID`));");
-            statement2.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(statement2 != null) {
-                try {
-                    statement2.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(connection2 != null) {
-                try {
-                    connection2.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        }
     }
-
 
     public boolean hasName(String name) throws SQLException {
         PreparedStatement ps = null;
@@ -235,16 +214,17 @@ public class MySQL implements Database {
     }
 
     @Override
-    public void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown) {
+    public void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown, boolean oneTime) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             Connection connection = null;
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("INSERT INTO ar_rewards (UUID,rewardID,expire) VALUES(?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ar_rewards (UUID,rewardID,expire,oneTime) VALUES(?,?,?,?)");
                 ps.setString(1, uuid.toString());
                 ps.setString(2, rewardID);
                 ps.setLong(3, expireCooldown);
+                ps.setBoolean(4, oneTime);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -365,7 +345,7 @@ public class MySQL implements Database {
             Connection connection = null;
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND expire < '" + actualTime + "';");
+                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND oneTime IS NOT TRUE AND expire < '" + actualTime + "';");
                 ps.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -389,7 +369,7 @@ public class MySQL implements Database {
     }
 
     @Override
-    public CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid) {
+    public CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid, boolean oneTime) {
         CompletableFuture<List<RewardCollected>> result = new CompletableFuture<>();
 
         long actualTime = System.currentTimeMillis();
@@ -401,11 +381,14 @@ public class MySQL implements Database {
             Connection connection = null;
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
+                if(!oneTime)
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS NOT TRUE AND expire > '" + actualTime + "';");
+                else
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS TRUE;");
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    rewards.add(new RewardCollected(UUID.fromString(rs.getString("UUID")), rs.getString("rewardID"), rs.getLong("expire")));
+                    rewards.add(new RewardCollected(UUID.fromString(rs.getString("UUID")), rs.getString("rewardID"), rs.getLong("expire"), rs.getBoolean("oneTime")));
                 }
 
                 result.complete(rewards);

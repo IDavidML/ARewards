@@ -32,6 +32,7 @@ Commands:
 
 Rewards:
   Cooldown: '&cYou cannot claim this reward for %cooldown%!'
+  OneTimeClaimed: '&cYou have already claimed this reward!'
   Reward: '&b+%reward_name%'
 
   # You can use here %center% tag here, to center message in chat.

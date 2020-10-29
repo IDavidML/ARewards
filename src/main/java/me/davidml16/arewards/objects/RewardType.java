@@ -27,13 +27,17 @@ public class RewardType {
     private List<String> loreCooldown;
 
     private boolean requirePermission;
+    private String permission;
     private List<String> lorePermission;
     private List<String> noPermissionMessage;
+
+    private List<String> loreClaimed;
 
     private List<String> description;
     private List<Reward> rewards;
 
     private boolean needVote;
+    private boolean oneTime;
 
     public RewardType(Main main, String id, String name, int slot) {
         this.main = main;
@@ -42,6 +46,8 @@ public class RewardType {
         this.rewards = new ArrayList<>();
         this.cooldown = 0L;
         this.slot = slot;
+        this.needVote = false;
+        this.oneTime = false;
     }
 
     public String getId() {
@@ -107,6 +113,10 @@ public class RewardType {
 
     public void setNoPermissionMessage(List<String> noPermissionMessage) { this.noPermissionMessage = noPermissionMessage; }
 
+    public String getPermission() { return permission; }
+
+    public void setPermission(String permission) { this.permission = permission; }
+
     public List<String> getDescription() {
         return description;
     }
@@ -126,6 +136,14 @@ public class RewardType {
     public boolean isNeedVote() { return needVote; }
 
     public void setNeedVote(boolean needVote) { this.needVote = needVote; }
+
+    public boolean isOneTime() { return oneTime; }
+
+    public void setOneTime(boolean oneTime) { this.oneTime = oneTime; }
+
+    public List<String> getLoreClaimed() { return loreClaimed; }
+
+    public void setLoreClaimed(List<String> loreClaimed) { this.loreClaimed = loreClaimed; }
 
     @Override
     public String toString() {
@@ -149,6 +167,8 @@ public class RewardType {
         config.set("type.cooldown", getCooldownString());
 
         config.set("type.require_vote.enabled", isNeedVote());
+
+        config.set("type.one_time.enabled", isOneTime());
 
         config.set("type.rewards", new ArrayList<>());
         if (config.contains("type.rewards")) {

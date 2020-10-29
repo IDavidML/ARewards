@@ -9,28 +9,25 @@ public class RewardCollected {
     private UUID uuid;
     private String rewardID;
     private Long expire;
+    private boolean oneTime;
 
-    public RewardCollected(UUID uuid, String rewardID, Long expire) {
+    public RewardCollected(UUID uuid, String rewardID, Long expire, boolean oneTime) {
         this.uuid = uuid;
         this.rewardID = rewardID;
         this.expire = expire;
+        this.oneTime = oneTime;
     }
 
-    public RewardCollected(UUID uuid, String rewardID) {
+    public RewardCollected(UUID uuid, String rewardID, boolean oneTime) {
         this.uuid = uuid;
         this.rewardID = rewardID;
+        this.oneTime = oneTime;
 
         RewardType rewardType = Main.get().getRewardTypeHandler().getTypeBydId(rewardID);
         if(rewardType != null)
             this.expire = System.currentTimeMillis() + rewardType.getCooldown();
         else
             this.expire = System.currentTimeMillis();
-    }
-
-    public RewardCollected(UUID uuid, RewardType rewardType) {
-        this.uuid = uuid;
-        this.rewardID = rewardType.getId();
-        this.expire = System.currentTimeMillis() + rewardType.getCooldown();
     }
 
     public UUID getUuid() {
@@ -56,6 +53,10 @@ public class RewardCollected {
     public void setExpire(Long expire) {
         this.expire = expire;
     }
+
+    public boolean isOneTime() { return oneTime; }
+
+    public void setOneTime(boolean oneTime) { this.oneTime = oneTime; }
 
     @Override
     public String toString() {

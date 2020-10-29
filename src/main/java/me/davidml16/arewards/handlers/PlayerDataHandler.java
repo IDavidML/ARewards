@@ -56,9 +56,12 @@ public class PlayerDataHandler {
 			throwables.printStackTrace();
 		}
 
-		main.getDatabaseHandler().getRewardCollected(p.getUniqueId()).thenAccept(rewards -> {
-			profile.setRewards(rewards);
-			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+		main.getDatabaseHandler().getRewardCollected(p.getUniqueId(), false).thenAccept(rewards -> {
+			profile.getRewards().addAll(rewards);
+			main.getDatabaseHandler().getRewardCollected(p.getUniqueId(), true).thenAccept(rewards2 -> {
+				profile.getRewards().addAll(rewards2);
+				Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+			});
 		});
 
 		data.put(p.getUniqueId(), profile);

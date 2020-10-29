@@ -7,35 +7,46 @@ type:
   - '&7Cubelet.'
   require_permission:
     enabled: true
-    permission: arewards.rewards.obsidian
+    permission: arewards.reward.obsidian
     message:
     - '&cYou need at least Obsidian to be able to claim this reward!'
     - '&bPurchase ranks at &6store.example.net'
   require_vote:
     enabled: false
+  one_time:
+    enabled: false
   lore:
     available:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&6Click to claim reward!'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&6Click to claim reward!'
     cooldown:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&6%cooldown%'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&6%cooldown%'
     permission:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&cYou need at least &5Obsidian &cto be able to claim this reward!'
-    - '&bPurchase ranks at &6store.example.net'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&cYou need at least &5Obsidian &cto be able to claim this reward!'
+      - '&bPurchase ranks at &6store.example.net'
+    claimed:
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&8&oThis reward can only be claimed once.'
+      - ''
+      - '&cYou have already claimed this reward!'
   icon:
     available:
       item: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzRlNTY5MWNmY2ZkODhjMWRmMThmMDg4NDFjZDE4MGI1NDZlM2NjNjA0ZjM5YWVjODk2NGMxN2RiOTg4In19fQ==

@@ -27,7 +27,7 @@ public interface Database {
 
     String getPlayerUUID(String name) throws SQLException;
 
-    void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown) throws SQLException;
+    void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown, boolean oneTime) throws SQLException;
 
     void removeRewardCollected(UUID uuid, String rewardID) throws SQLException;
 
@@ -37,6 +37,6 @@ public interface Database {
 
     void removeExpiredRewards(UUID uuid) throws SQLException;
 
-    CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid);
+    CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid, boolean oneTime);
 
 }

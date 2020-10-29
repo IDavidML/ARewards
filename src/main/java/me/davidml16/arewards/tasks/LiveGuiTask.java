@@ -34,8 +34,6 @@ public class LiveGuiTask {
 				Player player = Bukkit.getPlayer(uuid);
 				Profile profile = main.getPlayerDataHandler().getData(player);
 
-				if(profile.getRewards().size() == 0) continue;
-
 				Map<Integer, ItemStack> items = new HashMap<>();
 
 				List<RewardCollected> rewardCollecteds = new ArrayList<>(profile.getRewards());

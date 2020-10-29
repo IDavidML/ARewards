@@ -6,35 +6,46 @@ type:
   - '&7Claim Lapiz rank''s weekly Cubelet.'
   require_permission:
     enabled: true
-    permission: arewards.rewards.lapiz
+    permission: arewards.reward.lapiz
     message:
     - '&cYou need at least Lapiz to be able to claim this reward!'
     - '&bPurchase ranks at &6store.example.net'
   require_vote:
     enabled: false
+  one_time:
+    enabled: false
   lore:
     available:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&6Click to claim reward!'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&6Click to claim reward!'
     cooldown:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&6%cooldown%'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&6%cooldown%'
     permission:
-    - '%description%'
-    - ''
-    - '&5Rewards:'
-    - '%rewards%'
-    - ''
-    - '&cYou need at least &1Lapiz &cto be able to claim this reward!'
-    - '&bPurchase ranks at &6store.example.net'
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&cYou need at least &1Lapiz &cto be able to claim this reward!'
+      - '&bPurchase ranks at &6store.example.net'
+    claimed:
+      - '%description%'
+      - ''
+      - '&5Rewards:'
+      - '%rewards%'
+      - ''
+      - '&8&oThis reward can only be claimed once.'
+      - ''
+      - '&cYou have already claimed this reward!'
   icon:
     available:
       item: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmQ4NDhkYzZmNjk0Y2JmMzU0NDE3MjJiMWEyN2ExOTVkYTU2ZTQ5NjAyMzE4MjRmZDdlYzViMTMxNWNjMmEifX19

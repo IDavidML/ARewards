@@ -23,6 +23,7 @@ public class Profile {
 		this.main = main;
 		this.uuid = uuid;
 		this.boxOpened = null;
+		this.rewards = new ArrayList<>();
 	}
 
 	public UUID getUuid() {

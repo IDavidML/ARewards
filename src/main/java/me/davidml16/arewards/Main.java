@@ -69,7 +69,7 @@ public class Main extends JavaPlugin {
 
     private CommandMap commandMap;
 
-    private List<String> templates = Arrays.asList("daily", "iron", "lapiz", "gold", "diamond", "emerald", "obsidian", "vote");
+    private List<String> templates = Arrays.asList("daily", "iron", "lapiz", "gold", "diamond", "emerald", "obsidian", "vote", "onetime");
 
     @Override
     public void onEnable() {

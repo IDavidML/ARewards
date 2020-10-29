@@ -119,6 +119,9 @@ public class Rewards_GUI implements Listener {
                 case "no_permission":
                     main.getTransactionHandler().noPermissionReward(p, rewardType);
                     break;
+                case "claimed":
+                    main.getTransactionHandler().claimedReward(p);
+                    break;
             }
 
             p.updateInventory();
@@ -201,31 +204,57 @@ public class Rewards_GUI implements Listener {
 
         } else {
 
-            ItemStack itemStack = rewardType.getCooldownIcon();
+            if(!rewardType.isOneTime()) {
 
-            for (String line : rewardType.getLoreCooldown()) {
+                ItemStack itemStack = rewardType.getCooldownIcon();
 
-                if(!line.contains("%rewards%"))
-                    lore.add(Utils.translate(line
-                            .replaceAll("%cooldown%", TimeUtils.millisToLongDHMS(rewardCollected.get().getExpire() - System.currentTimeMillis()))));
+                for (String line : rewardType.getLoreCooldown()) {
+
+                    if (!line.contains("%rewards%"))
+                        lore.add(Utils.translate(line
+                                .replaceAll("%cooldown%", TimeUtils.millisToLongDHMS(rewardCollected.get().getExpire() - System.currentTimeMillis()))));
+                    else
+                        lore.addAll(rewardsLore);
+
+                }
+
+                itemStack = new ItemBuilder(itemStack)
+                        .setName(Utils.translate(rewardType.getName()))
+                        .setLore(lore)
+                        .toItemStack();
+
+                if (!rewardType.isNeedVote())
+                    itemStack = NBTEditor.set(itemStack, "cooldown", "action");
                 else
-                    lore.addAll(rewardsLore);
+                    itemStack = NBTEditor.set(itemStack, "vote", "action");
+                itemStack = NBTEditor.set(itemStack, rewardType.getId(), "rewardID");
 
+                return itemStack;
+
+            } else {
+
+                ItemStack itemStack = rewardType.getCooldownIcon();
+
+                for (String line : rewardType.getLoreClaimed()) {
+
+                    if(!line.contains("%rewards%"))
+                        lore.add(Utils.translate(line));
+                    else
+                        lore.addAll(rewardsLore);
+
+                }
+
+                itemStack = new ItemBuilder(itemStack)
+                        .setName(Utils.translate(rewardType.getName()))
+                        .setLore(lore)
+                        .toItemStack();
+
+                itemStack = NBTEditor.set(itemStack, "claimed", "action");
+                itemStack = NBTEditor.set(itemStack, rewardType.getId(), "rewardID");
+
+                return itemStack;
 
             }
-
-            itemStack = new ItemBuilder(itemStack)
-                    .setName(Utils.translate(rewardType.getName()))
-                    .setLore(lore)
-                    .toItemStack();
-
-            if(!rewardType.isNeedVote())
-                itemStack = NBTEditor.set(itemStack, "cooldown", "action");
-            else
-                itemStack = NBTEditor.set(itemStack, "vote", "action");
-            itemStack = NBTEditor.set(itemStack, rewardType.getId(), "rewardID");
-
-            return itemStack;
 
         }
 

@@ -136,6 +136,10 @@ public class RewardTypeHandler {
                         config.set("type.require_vote.enabled", false);
                     }
 
+                    if (!config.contains("type.one_time")) {
+                        config.set("type.one_time.enabled", false);
+                    }
+
                     if (!config.contains("type.description")) {
                         List<String> lore = Arrays.asList(
                                 "&7Claim a example reward"
@@ -178,6 +182,20 @@ public class RewardTypeHandler {
                                 "&bPurchase ranks at &6store.example.net"
                         );
                         config.set("type.lore.permission", permission);
+                    }
+
+                    if (!config.contains("type.lore.claimed")) {
+                        List<String> permission = Arrays.asList(
+                                "%description%",
+                                "",
+                                "&5Rewards:",
+                                "%rewards%",
+                                "",
+                                "&8&oThis reward can only be claimed once.",
+                                "",
+                                "&cYou have already claimed this reward!"
+                        );
+                        config.set("type.lore.claimed", permission);
                     }
 
                     if (!config.contains("type.icon.available.item")) {
@@ -265,11 +283,25 @@ public class RewardTypeHandler {
                     }
                     rewardType.setLorePermission(lorePermission);
 
+                    List<String> claimedPermission = new ArrayList<>();
+                    for(String line : config.getStringList("type.lore.claimed")) {
+                        if(line.contains("%description%")) {
+                            claimedPermission.addAll(config.getStringList("type.description"));
+                        } else {
+                            claimedPermission.add(line);
+                        }
+                    }
+                    rewardType.setLoreClaimed(claimedPermission);
+
                     rewardType.setRequirePermission(config.getBoolean("type.require_permission.enabled"));
+
+                    rewardType.setPermission(config.getString("type.require_permission.permission"));
 
                     rewardType.setNoPermissionMessage(config.getStringList("type.require_permission.message"));
 
                     rewardType.setNeedVote(config.getBoolean("type.require_vote.enabled"));
+
+                    rewardType.setOneTime(config.getBoolean("type.one_time.enabled"));
 
                     rewardType.setDescription(config.getStringList("type.description"));
 
@@ -342,8 +374,7 @@ public class RewardTypeHandler {
     }
 
     public boolean haveRewardPermission(Player player, RewardType rewardType) {
-        String permission = Constants.REWARD_PERMISSION.replaceAll("%id%", rewardType.getId().toLowerCase());
-        return player.hasPermission(permission);
+        return player.hasPermission(rewardType.getPermission());
     }
 
 }

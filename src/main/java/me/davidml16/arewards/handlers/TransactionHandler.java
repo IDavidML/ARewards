@@ -26,9 +26,9 @@ public class TransactionHandler {
 
     public void claimReward(Player player, RewardType rewardType, boolean isVote) {
 
-        RewardCollected rewardCollected = new RewardCollected(player.getUniqueId(), rewardType.getId());
+        RewardCollected rewardCollected = new RewardCollected(player.getUniqueId(), rewardType.getId(), rewardType.isOneTime());
         try {
-            main.getDatabaseHandler().addRewardCollected(rewardCollected.getUuid(), rewardCollected.getRewardID(), rewardCollected.getExpire());
+            main.getDatabaseHandler().addRewardCollected(rewardCollected.getUuid(), rewardCollected.getRewardID(), rewardCollected.getExpire(), rewardCollected.isOneTime());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -156,6 +156,10 @@ public class TransactionHandler {
             else
                 player.sendMessage(Utils.translate(MessageUtils.centeredMessage(line.replaceAll("%center%", ""))));
 
+    }
+
+    public void claimedReward(Player player) {
+        player.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Rewards.OneTimeClaimed")));
     }
 
 }

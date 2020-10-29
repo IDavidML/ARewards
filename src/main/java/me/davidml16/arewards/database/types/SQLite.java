@@ -55,32 +55,21 @@ public class SQLite implements Database {
     }
 
     public void loadTables() {
+        runStatement("CREATE TABLE IF NOT EXISTS ar_rewards (`UUID` varchar(40) NOT NULL, `rewardID` varchar(40) NOT NULL, `expire` bigint NOT NULL DEFAULT 0, `oneTime` BOOLEAN NOT NULL DEFAULT false, PRIMARY KEY (`UUID`, `rewardID`));");
+        runStatement("ALTER TABLE ar_rewards ADD `oneTime` BOOLEAN NOT NULL DEFAULT false");
+        runStatement("CREATE TABLE IF NOT EXISTS ar_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), PRIMARY KEY (`UUID`));");
+    }
+
+    private void runStatement(String query) {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ar_rewards (`UUID` varchar(40) NOT NULL, `rewardID` varchar(40) NOT NULL, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `rewardID`));");
+            statement = connection.prepareStatement(query);
             statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ignored) {
         } finally {
             if(statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        PreparedStatement statement2 = null;
-        try {
-            statement2 = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ar_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), PRIMARY KEY (`UUID`));");
-            statement2.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(statement2 != null) {
-                try {
-                    statement2.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -173,14 +162,15 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown) {
+    public void addRewardCollected(UUID uuid, String rewardID, Long expireCooldown, boolean oneTime) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
-                ps = connection.prepareStatement("INSERT INTO ar_rewards (UUID,rewardID,expire) VALUES(?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ar_rewards (UUID,rewardID,expire,oneTime) VALUES(?,?,?,?)");
                 ps.setString(1, uuid.toString());
                 ps.setString(2, rewardID);
                 ps.setLong(3, expireCooldown);
+                ps.setBoolean(4, oneTime);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -265,7 +255,7 @@ public class SQLite implements Database {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
-                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND expire < '" + actualTime + "';");
+                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND oneTime IS NOT TRUE AND expire < '" + actualTime + "';");
                 ps.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -282,7 +272,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid) {
+    public CompletableFuture<List<RewardCollected>> getRewardCollected(UUID uuid, boolean oneTime) {
         CompletableFuture<List<RewardCollected>> result = new CompletableFuture<>();
 
         long actualTime = System.currentTimeMillis();
@@ -293,11 +283,14 @@ public class SQLite implements Database {
             ResultSet rs = null;
 
             try {
-                ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
+                if(!oneTime)
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS NOT TRUE AND expire > '" + actualTime + "';");
+                else
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS TRUE;");
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    rewards.add(new RewardCollected(UUID.fromString(rs.getString("UUID")), rs.getString("rewardID"), rs.getLong("expire")));
+                    rewards.add(new RewardCollected(UUID.fromString(rs.getString("UUID")), rs.getString("rewardID"), rs.getLong("expire"), rs.getBoolean("oneTime")));
                 }
 
                 result.complete(rewards);
