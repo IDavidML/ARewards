@@ -42,6 +42,7 @@ public class PluginHandler {
 
         main.getHologramTask().start();
         main.getCollectedRewardTask().start();
+
         if(main.isLiveGuiUpdates())
             main.getLiveGuiTask().start();
     }

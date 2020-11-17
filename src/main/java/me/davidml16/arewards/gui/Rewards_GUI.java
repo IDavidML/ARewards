@@ -145,7 +145,7 @@ public class Rewards_GUI implements Listener {
             rewardsLore.add(Utils.translate(guiLayout.getMessage("Items.Reward.DisplayLine").replaceAll("%reward_name%", reward.getName())));
         }
         if(rewardType.getRewards().size() == 0)
-            rewardsLore.add(Utils.translate("&7- &cN/A"));
+            rewardsLore.add(Utils.translate(main.getLanguageHandler().getMessage("Rewards.NoRewardsLine")));
 
         if(rewardType.isRequirePermission()) {
 

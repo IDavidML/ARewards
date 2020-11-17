@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.davidml16.arewards.api.RewardsAPI;
 import me.davidml16.arewards.database.DatabaseHandler;
 import me.davidml16.arewards.database.types.Database;
 import me.davidml16.arewards.events.Event_Interact;
@@ -38,6 +39,8 @@ public class Main extends JavaPlugin {
     private MetricsLite metrics;
 
     private ProtocolManager protocolManager;
+
+    private RewardsAPI rewardsAPI;
 
     private HologramTask hologramTask;
     private CollectedRewardTask collectedRewardTask;
@@ -155,6 +158,8 @@ public class Main extends JavaPlugin {
         editChestGUI = new EditChest_GUI(this);
 
         guiHandler = new GUIHandler(this);
+
+        rewardsAPI = new RewardsAPI(this);
 
         registerCommands();
         registerEvents();

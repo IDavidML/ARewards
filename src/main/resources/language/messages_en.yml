@@ -35,6 +35,9 @@ Rewards:
   OneTimeClaimed: '&cYou have already claimed this reward!'
   Reward: '&b+%reward_name%'
 
+  # This will be displayed in lore if no rewards have been configured
+  NoRewardsLine: '&7- &cN/A'
+
   # You can use here %center% tag here, to center message in chat.
   Claimed:
     - ''
