@@ -31,6 +31,10 @@ MySQL:
 LiveGuiUpdates: true
 
 
+# Enable/disable if you want to be reminded that you have rewards to claim when you login
+LoginReminder: false
+
+
 # Change hologram settings
 # Update interval default: 30 (1.5s)
 # Color animation default colors: &f and &c

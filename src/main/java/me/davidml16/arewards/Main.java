@@ -139,6 +139,8 @@ public class Main extends JavaPlugin {
 
         rewardsGUI = new Rewards_GUI(this);
 
+        settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
+
         settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
         liveGuiTask = new LiveGuiTask(this);
         if(isLiveGuiUpdates())
@@ -266,6 +268,10 @@ public class Main extends JavaPlugin {
     public boolean isLiveGuiUpdates() { return settings.get("LiveGuiUpdates"); }
 
     public void setLiveGuiUpdates(boolean value) { settings.put("LiveGuiUpdates", value); }
+
+    public boolean isLoginReminder() { return settings.get("LoginReminder"); }
+
+    public void setLoginReminder(boolean value) { settings.put("LoginReminder", value); }
 
     public CommandMap getCommandMap() {
         return commandMap;

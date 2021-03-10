@@ -38,6 +38,11 @@ Rewards:
   # This will be displayed in lore if no rewards have been configured
   NoRewardsLine: '&7- &cN/A'
 
+  LoginReminder:
+    - ''
+    - '&6%player% &ayou still have &6%amount% &a%rewardString% to claim!'
+    - ''
+
   # You can use here %center% tag here, to center message in chat.
   Claimed:
     - ''

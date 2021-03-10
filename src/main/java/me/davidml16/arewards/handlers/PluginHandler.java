@@ -24,6 +24,8 @@ public class PluginHandler {
 
         main.setLiveGuiUpdates(main.getConfig().getBoolean("LiveGuiUpdates"));
 
+        main.setLoginReminder(main.getConfig().getBoolean("LoginReminder"));
+
         main.getHologramTask().stop();
         main.getCollectedRewardTask().stop();
         main.getLiveGuiTask().stop();

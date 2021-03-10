@@ -255,7 +255,7 @@ public class SQLite implements Database {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
-                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND oneTime IS NOT TRUE AND expire < '" + actualTime + "';");
+                ps = connection.prepareStatement("DELETE FROM ar_rewards WHERE UUID = '" + uuid + "' AND oneTime = '0' AND expire < '" + actualTime + "';");
                 ps.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -284,9 +284,9 @@ public class SQLite implements Database {
 
             try {
                 if(!oneTime)
-                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS NOT TRUE AND expire > '" + actualTime + "';");
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime = '0' AND expire > '" + actualTime + "';");
                 else
-                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime IS TRUE;");
+                    ps = connection.prepareStatement("SELECT * FROM ar_rewards WHERE UUID = '" + uuid.toString() + "' AND oneTime = '1';");
 
                 rs = ps.executeQuery();
                 while (rs.next()) {

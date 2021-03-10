@@ -57,11 +57,32 @@ public class PlayerDataHandler {
 		}
 
 		main.getDatabaseHandler().getRewardCollected(p.getUniqueId(), false).thenAccept(rewards -> {
+
 			profile.getRewards().addAll(rewards);
+
 			main.getDatabaseHandler().getRewardCollected(p.getUniqueId(), true).thenAccept(rewards2 -> {
+
 				profile.getRewards().addAll(rewards2);
+
 				Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+
+				if(main.isLoginReminder()) {
+					Bukkit.getScheduler().runTaskLater(main, () -> {
+						int available = main.getRewardTypeHandler().getTypes().values().size() - profile.getRewards().size();
+						if(available > 0) {
+							String rewardsString = available != 1 ? main.getLanguageHandler().getMessage("Strings.Rewards") : main.getLanguageHandler().getMessage("Strings.Reward");
+							for (String line : main.getLanguageHandler().getMessageList("Rewards.LoginReminder")) {
+								line = line.replaceAll("%amount%", Integer.toString(available));
+								line = line.replaceAll("%player%", p.getName());
+								line = line.replaceAll("%rewardString%", rewardsString);
+								p.sendMessage(line);
+							}
+						}
+					}, 20L);
+				}
+
 			});
+
 		});
 
 		data.put(p.getUniqueId(), profile);
