@@ -111,17 +111,19 @@ public class TransactionHandler {
 
         List<String> lore = new ArrayList<>();
         for (String line : main.getLanguageHandler().getMessageList("Rewards.Claimed")) {
-            if(!line.contains("%rewards%"))
-                lore.add(Utils.translate(line.replaceAll("%center%", "")));
-            else
-                lore.addAll(rewardsLore);
+            if(!line.contains("%rewards%")) {
+                lore.add(Utils.translate(line));
+            } else {
+                for(String rLine : rewardsLore)
+                    lore.add((line.contains("%center%") ? "%center%" : "") + rLine);
+            }
         }
 
         for (String line : lore)
             if(!line.contains("%center%"))
                 player.sendMessage(Utils.translate(line));
             else
-                player.sendMessage(Utils.translate(MessageUtils.centeredMessage(line)));
+                player.sendMessage(MessageUtils.centeredMessage(Utils.translate(line.replaceAll("%center%", ""))));
 
     }
 
@@ -134,17 +136,19 @@ public class TransactionHandler {
 
         List<String> lore = new ArrayList<>();
         for (String line : main.getLanguageHandler().getMessageList("Rewards.Voted")) {
-            if(!line.contains("%rewards%"))
-                lore.add(Utils.translate(line.replaceAll("%center%", "")));
-            else
-                lore.addAll(rewardsLore);
+            if(!line.contains("%rewards%")) {
+                lore.add(Utils.translate(line));
+            } else {
+                for(String rLine : rewardsLore)
+                    lore.add((line.contains("%center%") ? "%center%" : "") + rLine);
+            }
         }
 
         for (String line : lore)
             if(!line.contains("%center%"))
                 player.sendMessage(Utils.translate(line));
             else
-                player.sendMessage(Utils.translate(MessageUtils.centeredMessage(line)));
+                player.sendMessage(MessageUtils.centeredMessage(Utils.translate(line.replaceAll("%center%", ""))));
 
     }
 
@@ -154,7 +158,7 @@ public class TransactionHandler {
             if(!line.contains("%center%"))
                 player.sendMessage(Utils.translate(line));
             else
-                player.sendMessage(Utils.translate(MessageUtils.centeredMessage(line.replaceAll("%center%", ""))));
+                player.sendMessage(MessageUtils.centeredMessage(Utils.translate(line.replaceAll("%center%", ""))));
 
     }
 
