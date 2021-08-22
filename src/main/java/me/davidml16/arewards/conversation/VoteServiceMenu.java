@@ -1,19 +1,17 @@
 package me.davidml16.arewards.conversation;
 
 import me.davidml16.arewards.Main;
-import me.davidml16.arewards.objects.GUILayout;
 import me.davidml16.arewards.objects.RewardType;
 import me.davidml16.arewards.utils.Sounds;
-import me.davidml16.arewards.utils.TimeAPI.TimeAPI;
 import me.davidml16.arewards.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 
-public class SlotMenu implements ConversationAbandonedListener, CommonPrompts {
+public class VoteServiceMenu implements ConversationAbandonedListener, CommonPrompts {
 
     private Main main;
-    public SlotMenu(Main main) {
+    public VoteServiceMenu(Main main) {
         this.main = main;
     }
 
@@ -21,7 +19,7 @@ public class SlotMenu implements ConversationAbandonedListener, CommonPrompts {
         Conversation conversation = (new ConversationFactory(main)).withModality(true).withLocalEcho(false).withFirstPrompt(new RenameMenuOptions()).withTimeout(3600).thatExcludesNonPlayersWithMessage("").addConversationAbandonedListener(this).buildConversation(paramPlayer);
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("type", type);
-        conversation.getContext().setSessionData("slot", type.getSlot());
+        conversation.getContext().setSessionData("voteService", type.getVoteService());
 
         main.getGuiHandler().addConversation(paramPlayer);
 
@@ -38,16 +36,15 @@ public class SlotMenu implements ConversationAbandonedListener, CommonPrompts {
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             RewardType type = (RewardType) param1ConversationContext.getSessionData("type");
             Player player = (Player) param1ConversationContext.getSessionData("player");
-            GUILayout guiLayout = main.getLayoutHandler().getLayout("rewards");
             switch (param1String) {
                 case "1":
-                    return new NumericIntegerRangePrompt(main, this, ChatColor.YELLOW + "  Enter reward type slot, \"cancel\" to return.\n\n ", "slot", 0, (guiLayout.getInteger("Size") - 10));
+                    return new CommonStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter vote service website (Example: 'minecraftservers.org'), \"cancel\" to return.\n\n ", "voteService");
                 case "2":
-                    int slot = (int) param1ConversationContext.getSessionData("slot");
-                    type.setSlot(slot);
+                    String voteService = (String) param1ConversationContext.getSessionData("voteService");
+                    type.setVoteService(voteService);
                     type.save();
                     param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSaved slot of reward type &e" + type.getId() + " &awithout errors!"));
+                            + " &aSaved data of reward type &e" + type.getId() + " &awithout errors!"));
                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                     main.getSetupGUI().reloadGUI(type.getId());
                     main.getEditSettingsGUI().reloadGUI(type.getId());
@@ -61,9 +58,9 @@ public class SlotMenu implements ConversationAbandonedListener, CommonPrompts {
 
         public String getPromptText(ConversationContext param1ConversationContext) {
             String cadena = "";
-            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  REWARD TYPE SLOT MENU\n";
+            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  REWARD TYPE VOTE SERVICE\n";
             cadena += ChatColor.GREEN + " \n";
-            cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Edit reward slot (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("slot") + ChatColor.GRAY + ")\n";
+            cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Edit vote service (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("voteService")) + ChatColor.GRAY + ")\n";
             cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Save and exit\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";

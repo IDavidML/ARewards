@@ -25,7 +25,7 @@ public class Event_Vote implements Listener {
         Player player = Bukkit.getPlayer(username);
 
         if(player != null)
-            main.getTransactionHandler().claimVoteRewards(player);
+            main.getTransactionHandler().claimVoteRewards(player, vote.getServiceName());
 
     }
 

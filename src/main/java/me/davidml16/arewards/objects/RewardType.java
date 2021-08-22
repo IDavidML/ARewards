@@ -36,8 +36,10 @@ public class RewardType {
     private List<String> description;
     private List<Reward> rewards;
 
-    private boolean needVote;
     private boolean oneTime;
+
+    private boolean needVote;
+    private String voteService;
 
     public RewardType(Main main, String id, String name, int slot) {
         this.main = main;
@@ -46,8 +48,9 @@ public class RewardType {
         this.rewards = new ArrayList<>();
         this.cooldown = 0L;
         this.slot = slot;
-        this.needVote = false;
         this.oneTime = false;
+        this.needVote = false;
+        this.voteService = "example.com";
     }
 
     public String getId() {
@@ -137,6 +140,14 @@ public class RewardType {
 
     public void setNeedVote(boolean needVote) { this.needVote = needVote; }
 
+    public String getVoteService() {
+        return voteService;
+    }
+
+    public void setVoteService(String voteService) {
+        this.voteService = voteService;
+    }
+
     public boolean isOneTime() { return oneTime; }
 
     public void setOneTime(boolean oneTime) { this.oneTime = oneTime; }
@@ -160,6 +171,7 @@ public class RewardType {
     }
 
     public void save() {
+
         FileConfiguration config = main.getRewardTypeHandler().getConfig(id);
 
         config.set("type.slot", getSlot());
@@ -167,6 +179,8 @@ public class RewardType {
         config.set("type.cooldown", getCooldownString());
 
         config.set("type.require_vote.enabled", isNeedVote());
+
+        config.set("type.require_vote.website_service", getVoteService());
 
         config.set("type.one_time.enabled", isOneTime());
 
@@ -191,6 +205,7 @@ public class RewardType {
         }
 
         main.getRewardTypeHandler().saveConfig(id);
+
     }
 
 }

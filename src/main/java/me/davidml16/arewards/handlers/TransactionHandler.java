@@ -1,5 +1,6 @@
 package me.davidml16.arewards.handlers;
 
+import com.vexsoftware.votifier.model.Vote;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.Profile;
 import me.davidml16.arewards.objects.RewardCollected;
@@ -77,7 +78,7 @@ public class TransactionHandler {
 
     }
 
-    public void claimVoteRewards(Player player) {
+    public void claimVoteRewards(Player player, String service) {
 
         Profile profile = main.getPlayerDataHandler().getData(player.getUniqueId());
         List<RewardCollected> rewardCollecteds = new ArrayList<>(profile.getRewards());
@@ -90,6 +91,9 @@ public class TransactionHandler {
             if(rewardType.isRequirePermission())
                 if(!main.getRewardTypeHandler().haveRewardPermission(player, rewardType))
                     continue;
+
+            if(!rewardType.getVoteService().equalsIgnoreCase(service))
+                continue;
 
             Optional<RewardCollected> rewardCollected = rewardCollecteds.stream().filter(rc -> rc.getRewardID().equalsIgnoreCase(rewardType.getId())).findFirst();
 

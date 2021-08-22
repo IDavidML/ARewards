@@ -5,6 +5,7 @@ import me.davidml16.arewards.Main;
 import me.davidml16.arewards.conversation.CooldownMenu;
 import me.davidml16.arewards.conversation.RenameMenu;
 import me.davidml16.arewards.conversation.SlotMenu;
+import me.davidml16.arewards.conversation.VoteServiceMenu;
 import me.davidml16.arewards.conversation.rewards.CommandRewardMenu;
 import me.davidml16.arewards.conversation.rewards.EditCommandRewardMenu;
 import me.davidml16.arewards.conversation.rewards.EditItemRewardMenu;
@@ -84,20 +85,8 @@ public class EditSettings_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(11, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7Change the cooldown "),
-                        Utils.translate(" &7to claim again this reward "),
-                        "",
-                        Utils.translate(" &7Cooldown: &6" + type.getCooldownString() + " "),
-                        "",
-                        Utils.translate("&eClick to edit! ")
-                )
-                .toItemStack());
-
         if(type.isRequirePermission()) {
-            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired permission"))
+            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired permission"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need permission "),
@@ -109,7 +98,7 @@ public class EditSettings_GUI implements Listener {
                     )
                     .toItemStack());
         } else {
-            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired permission"))
+            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired permission"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need permission "),
@@ -123,7 +112,8 @@ public class EditSettings_GUI implements Listener {
         }
 
         if(type.isNeedVote()) {
-            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
+
+            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need vote "),
@@ -132,39 +122,69 @@ public class EditSettings_GUI implements Listener {
                             Utils.translate("&eClick to disable! ")
                     )
                     .toItemStack());
+
+            gui.setItem(25, new ItemBuilder(XMaterial.MAGMA_CREAM.parseItem()).setName(Utils.translate("&aVote website service"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Change the vote website "),
+                            Utils.translate(" &7service from you perform the vote, "),
+                            Utils.translate(" &7for example: &6minecraftservers.org. "),
+                            "",
+                            Utils.translate(" &7Vote service: &6" + type.getVoteService() + " "),
+                            "",
+                            Utils.translate("&eClick to edit! ")
+                    )
+                    .toItemStack());
+
         } else {
-            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
+
+            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need vote "),
                             Utils.translate(" &7to claim this reward "),
+                            "",
+                            Utils.translate("&eClick to enable! ")
+                    )
+                    .toItemStack());
+
+            gui.setItem(25, edge);
+
+        }
+
+        if(type.isOneTime()) {
+            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aOne time claim"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if this reward can "),
+                            Utils.translate(" &7only be claimed once. "),
+                            "",
+                            Utils.translate("&eClick to disable! ")
+                    )
+                    .toItemStack());
+        } else {
+            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cOne time claim"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if this reward can "),
+                            Utils.translate(" &7only be claimed once. "),
                             "",
                             Utils.translate("&eClick to enable! ")
                     )
                     .toItemStack());
         }
 
-        if(type.isOneTime()) {
-            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aOne time claim"))
-                    .setLore(
-                            "",
-                            Utils.translate(" &7Toggle if this reward can "),
-                            Utils.translate(" &7only be claimed once. "),
-                            "",
-                            Utils.translate("&eClick to disable! ")
-                    )
-                    .toItemStack());
-        } else {
-            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cOne time claim"))
-                    .setLore(
-                            "",
-                            Utils.translate(" &7Toggle if this reward can "),
-                            Utils.translate(" &7only be claimed once. "),
-                            "",
-                            Utils.translate("&eClick to enable! ")
-                    )
-                    .toItemStack());
-        }
+        gui.setItem(19, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
+                .setLore(
+                        "",
+                        Utils.translate(" &7Change the cooldown "),
+                        Utils.translate(" &7to claim again this reward "),
+                        "",
+                        Utils.translate(" &7Cooldown: &6" + type.getCooldownString() + " "),
+                        "",
+                        Utils.translate("&eClick to edit! ")
+                )
+                .toItemStack());
 
         gui.setItem(31, back);
 
@@ -201,6 +221,8 @@ public class EditSettings_GUI implements Listener {
 
         gui.setContents(guis.get(id).getContents());
 
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+
         RewardType type = main.getRewardTypeHandler().getTypeBydId(id);
 
         gui.setItem(10, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aSlot"))
@@ -215,20 +237,8 @@ public class EditSettings_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(11, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7Change the cooldown "),
-                        Utils.translate(" &7to claim again this reward "),
-                        "",
-                        Utils.translate(" &7Cooldown: &6" + type.getCooldownString() + " "),
-                        "",
-                        Utils.translate("&eClick to edit! ")
-                )
-                .toItemStack());
-
         if(type.isRequirePermission()) {
-            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired permission"))
+            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired permission"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need permission "),
@@ -240,7 +250,7 @@ public class EditSettings_GUI implements Listener {
                     )
                     .toItemStack());
         } else {
-            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired permission"))
+            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired permission"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need permission "),
@@ -254,7 +264,8 @@ public class EditSettings_GUI implements Listener {
         }
 
         if(type.isNeedVote()) {
-            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
+
+            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aRequired vote"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need vote "),
@@ -263,39 +274,69 @@ public class EditSettings_GUI implements Listener {
                             Utils.translate("&eClick to disable! ")
                     )
                     .toItemStack());
+
+            gui.setItem(25, new ItemBuilder(XMaterial.MAGMA_CREAM.parseItem()).setName(Utils.translate("&aVote website service"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Change the vote website "),
+                            Utils.translate(" &7service from you perform the vote, "),
+                            Utils.translate(" &7for example: &6minecraftservers.org. "),
+                            "",
+                            Utils.translate(" &7Vote service: &6" + type.getVoteService() + " "),
+                            "",
+                            Utils.translate("&eClick to edit! ")
+                    )
+                    .toItemStack());
+
         } else {
-            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
+
+            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cRequired vote"))
                     .setLore(
                             "",
                             Utils.translate(" &7Toggle if you need vote "),
                             Utils.translate(" &7to claim this reward "),
+                            "",
+                            Utils.translate("&eClick to enable! ")
+                    )
+                    .toItemStack());
+
+            gui.setItem(25, edge);
+
+        }
+
+        if(type.isOneTime()) {
+            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aOne time claim"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if this reward can "),
+                            Utils.translate(" &7only be claimed once. "),
+                            "",
+                            Utils.translate("&eClick to disable! ")
+                    )
+                    .toItemStack());
+        } else {
+            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cOne time claim"))
+                    .setLore(
+                            "",
+                            Utils.translate(" &7Toggle if this reward can "),
+                            Utils.translate(" &7only be claimed once. "),
                             "",
                             Utils.translate("&eClick to enable! ")
                     )
                     .toItemStack());
         }
 
-        if(type.isOneTime()) {
-            gui.setItem(16, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aOne time claim"))
-                    .setLore(
-                            "",
-                            Utils.translate(" &7Toggle if this reward can "),
-                            Utils.translate(" &7only be claimed once. "),
-                            "",
-                            Utils.translate("&eClick to disable! ")
-                    )
-                    .toItemStack());
-        } else {
-            gui.setItem(16, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cOne time claim"))
-                    .setLore(
-                            "",
-                            Utils.translate(" &7Toggle if this reward can "),
-                            Utils.translate(" &7only be claimed once. "),
-                            "",
-                            Utils.translate("&eClick to enable! ")
-                    )
-                    .toItemStack());
-        }
+        gui.setItem(19, new ItemBuilder(XMaterial.CLOCK.parseItem()).setName(Utils.translate("&aCooldown"))
+                .setLore(
+                        "",
+                        Utils.translate(" &7Change the cooldown "),
+                        Utils.translate(" &7to claim again this reward "),
+                        "",
+                        Utils.translate(" &7Cooldown: &6" + type.getCooldownString() + " "),
+                        "",
+                        Utils.translate("&eClick to edit! ")
+                )
+                .toItemStack());
 
         if (!opened.containsKey(p.getUniqueId())) {
             p.openInventory(gui);
@@ -322,6 +363,7 @@ public class EditSettings_GUI implements Listener {
         if (e.getCurrentItem() == null) return;
 
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
 
             int slot = e.getRawSlot();
@@ -332,25 +374,29 @@ public class EditSettings_GUI implements Listener {
                 p.closeInventory();
                 new SlotMenu(main).getConversation(p, rewardType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 11) {
+            } else if (slot == 19) {
                 p.closeInventory();
                 new CooldownMenu(main).getConversation(p, rewardType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 14) {
+            } else if (slot == 12) {
                 rewardType.setRequirePermission(!rewardType.isRequirePermission());
                 rewardType.save();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(rewardType.getId());
-            } else if (slot == 15) {
+            } else if (slot == 16) {
                 rewardType.setNeedVote(!rewardType.isNeedVote());
                 rewardType.save();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(rewardType.getId());
-            } else if (slot == 16) {
+            } else if (slot == 14) {
                 rewardType.setOneTime(!rewardType.isOneTime());
                 rewardType.save();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(rewardType.getId());
+            } else if (slot == 25 && rewardType.isNeedVote()) {
+                p.closeInventory();
+                new VoteServiceMenu(main).getConversation(p, rewardType).begin();
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
             } else if (slot == 31) {
                 main.getSetupGUI().open(p, rewardType.getId());
             }

@@ -118,6 +118,7 @@ public class Setup_GUI implements Listener {
                         Utils.translate(" &7- Slot "),
                         Utils.translate(" &7- Cooldown "),
                         Utils.translate(" &7- Required permission "),
+                        Utils.translate(" &7- Vote settings "),
                         "",
                         Utils.translate("&eClick to open settings menu! ")
                 )

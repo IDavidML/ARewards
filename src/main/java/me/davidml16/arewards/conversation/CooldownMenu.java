@@ -49,7 +49,8 @@ public class CooldownMenu implements ConversationAbandonedListener, CommonPrompt
                             + " &aSaved cooldown of reward type &e" + type.getId() + " &awithout errors!"));
                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                     main.getSetupGUI().reloadGUI(type.getId());
-                    main.getSetupGUI().open(player, type.getId());
+                    main.getEditSettingsGUI().reloadGUI(type.getId());
+                    main.getEditSettingsGUI().open(player, type.getId());
                     main.getGuiHandler().removeConversation(player);
                     return Prompt.END_OF_CONVERSATION;
             }

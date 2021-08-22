@@ -136,6 +136,10 @@ public class RewardTypeHandler {
                         config.set("type.require_vote.enabled", false);
                     }
 
+                    if (!config.contains("type.require_vote.website_service")) {
+                        config.set("type.require_vote.website_service", "example.com");
+                    }
+
                     if (!config.contains("type.one_time")) {
                         config.set("type.one_time.enabled", false);
                     }
@@ -300,6 +304,7 @@ public class RewardTypeHandler {
                     rewardType.setNoPermissionMessage(config.getStringList("type.require_permission.message"));
 
                     rewardType.setNeedVote(config.getBoolean("type.require_vote.enabled"));
+                    rewardType.setVoteService(config.getString("type.require_vote.website_service"));
 
                     rewardType.setOneTime(config.getBoolean("type.one_time.enabled"));
 
