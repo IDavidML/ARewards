@@ -1,7 +1,6 @@
 name: ARewards
 version: ${project.version}
 main: me.davidml16.arewards.Main
-depend: [HolographicDisplays, ProtocolLib]
-softdepend: [PlaceholderAPI, Votifier, Multiverse-Core]
+softdepend: [HolographicDisplays, ProtocolLib, PlaceholderAPI, Votifier, Multiverse-Core]
 authors: [DavidML16]
 api-version: 1.13

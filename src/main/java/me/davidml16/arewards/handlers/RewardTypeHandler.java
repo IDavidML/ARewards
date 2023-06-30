@@ -1,13 +1,13 @@
 package me.davidml16.arewards.handlers;
 
+import com.cryptomorin.xseries.XItemStack;
 import me.davidml16.arewards.Constants;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.RewardType;
 import me.davidml16.arewards.utils.SkullCreator;
 import me.davidml16.arewards.utils.TimeAPI.TimeAPI;
 import me.davidml16.arewards.utils.Utils;
-import me.davidml16.arewards.utils.XSeries.XItemStack;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -237,7 +237,7 @@ public class RewardTypeHandler {
                                 break;
                         }
                     } else {
-                        rewardType.setAvailableIcon(XItemStack.deserializeIcon(config, "type.icon.available.item", false));
+                        rewardType.setAvailableIcon(XItemStack.deserialize(Utils.getConfigurationSection(config, "type.icon.available.item")));
                     }
 
                     if (!(config.get("type.icon.cooldown.item") instanceof MemorySection)) {
@@ -254,7 +254,7 @@ public class RewardTypeHandler {
                                 break;
                         }
                     } else {
-                        rewardType.setCooldownIcon(XItemStack.deserializeIcon(config, "type.icon.cooldown.item", false));
+                        rewardType.setCooldownIcon(XItemStack.deserialize(Utils.getConfigurationSection(config, "type.icon.cooldown.item")));
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

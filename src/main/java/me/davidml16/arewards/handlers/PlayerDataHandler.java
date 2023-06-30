@@ -64,7 +64,8 @@ public class PlayerDataHandler {
 
 				profile.getRewards().addAll(rewards2);
 
-				Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+				if(main.getHologramHandler() != null)
+					Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().getImplementation().reloadHolograms(p), 2L);
 
 				if(main.isLoginReminder()) {
 					Bukkit.getScheduler().runTaskLater(main, () -> {

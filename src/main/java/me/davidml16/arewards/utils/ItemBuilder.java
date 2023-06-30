@@ -1,6 +1,6 @@
 package me.davidml16.arewards.utils;
 
-import me.davidml16.arewards.utils.XSeries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

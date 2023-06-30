@@ -8,7 +8,6 @@ import me.davidml16.arewards.objects.Profile;
 import me.davidml16.arewards.objects.RewardCollected;
 import me.davidml16.arewards.objects.rewards.Reward;
 import me.davidml16.arewards.utils.Utils;
-import me.davidml16.arewards.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

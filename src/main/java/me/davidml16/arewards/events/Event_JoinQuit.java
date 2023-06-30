@@ -23,7 +23,10 @@ public class Event_JoinQuit implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        main.getHologramHandler().loadHolograms(p);
+
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramHandler().getImplementation().loadHolograms(p);
+
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
@@ -41,7 +44,9 @@ public class Event_JoinQuit implements Listener {
         Player p = e.getPlayer();
 
         main.getGuiHandler().removeOpened(p);
-        main.getHologramHandler().removeHolograms(p);
+
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramHandler().getImplementation().removeHolograms(p);
 
         main.setPlayerCount(main.getPlayerCount() - 1);
 
@@ -56,7 +61,8 @@ public class Event_JoinQuit implements Listener {
 
     @EventHandler
     public void worldChange(PlayerChangedWorldEvent e) {
-        main.getHologramHandler().reloadHolograms(e.getPlayer());
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramHandler().getImplementation().reloadHolograms(e.getPlayer());
     }
 
 }

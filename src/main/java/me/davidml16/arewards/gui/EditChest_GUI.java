@@ -1,5 +1,6 @@
 package me.davidml16.arewards.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.arewards.Constants;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.GUILayout;
@@ -8,7 +9,6 @@ import me.davidml16.arewards.utils.Utils;
 import me.davidml16.arewards.utils.ItemBuilder;
 import me.davidml16.arewards.utils.SkullCreator;
 import me.davidml16.arewards.utils.Sounds;
-import me.davidml16.arewards.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -158,7 +158,8 @@ public class EditChest_GUI implements Listener {
 
             if(slot == 11) {
                 chest.setBlockHeight(chest.getBlockHeight() + 0.015);
-                main.getHologramHandler().moveHologram(chest);
+                if(main.getHologramHandler().getImplementation() != null)
+                    main.getHologramHandler().getImplementation().moveHologram(chest);
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(chest);
             } else if(slot == 12) {
@@ -166,13 +167,15 @@ public class EditChest_GUI implements Listener {
                     chest.setBlockHeight(Constants.BLOCK_HEIGHT_DEFAULT);
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
                     reloadGUI(chest);
-
-                    main.getHologramHandler().moveHologram(chest);
-                    Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().moveHologram(chest), 5L);
+                    if(main.getHologramHandler().getImplementation() != null) {
+                        main.getHologramHandler().getImplementation().moveHologram(chest);
+                        Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().getImplementation().moveHologram(chest), 5L);
+                    }
                 }
             } else if(slot == 13) {
                 chest.setBlockHeight(chest.getBlockHeight() - 0.015);
-                main.getHologramHandler().moveHologram(chest);
+                if(main.getHologramHandler().getImplementation() != null)
+                    main.getHologramHandler().getImplementation().moveHologram(chest);
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(chest);
             } else if(slot == 15) {

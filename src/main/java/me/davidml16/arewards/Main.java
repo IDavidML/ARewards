@@ -2,8 +2,6 @@ package me.davidml16.arewards;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.arewards.api.RewardsAPI;
 import me.davidml16.arewards.database.DatabaseHandler;
 import me.davidml16.arewards.database.types.Database;
@@ -15,6 +13,7 @@ import me.davidml16.arewards.gui.rewards.EditRewardItems_GUI;
 import me.davidml16.arewards.gui.rewards.EditRewards_GUI;
 import me.davidml16.arewards.handlers.*;
 import me.davidml16.arewards.handlers.PluginHandler;
+import me.davidml16.arewards.holograms.HologramHandler;
 import me.davidml16.arewards.tasks.CollectedRewardTask;
 import me.davidml16.arewards.tasks.HologramTask;
 import me.davidml16.arewards.tasks.LiveGuiTask;
@@ -90,13 +89,6 @@ public class Main extends JavaPlugin {
         }
         reloadConfig();
 
-        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            getLogger().severe("*** HolographicDisplays / ProtocolLib is not installed or not enabled. ***");
-            getLogger().severe("*** This plugin will be disabled. ***");
-            setEnabled(false);
-            return;
-        }
-
         protocolManager = ProtocolLibrary.getProtocolManager();
 
         pluginHandler = new PluginHandler(this);
@@ -124,13 +116,26 @@ public class Main extends JavaPlugin {
         playerDataHandler = new PlayerDataHandler(this);
 
         hologramHandler = new HologramHandler(this);
-        hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
-        hologramHandler.loadHolograms();
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            setEnabled(false);
+            return;
+        }
+
+        if(hologramHandler.getImplementation() != null) {
+            int distance = getConfig().getInt("Holograms.VisibilityDistance");
+            hologramHandler.setVisibilityDistance(distance * distance);
+
+            hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
+            hologramHandler.getImplementation().loadHolograms();
+
+            hologramTask = new HologramTask(this);
+            hologramTask.start();
+        }
 
         playerDataHandler.loadAllPlayerData();
-
-        hologramTask = new HologramTask(this);
-        hologramTask.start();
 
         collectedRewardTask = new CollectedRewardTask(this);
         collectedRewardTask.start();
@@ -192,11 +197,7 @@ public class Main extends JavaPlugin {
         log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        if(hologramHandler != null) hologramHandler.removeHolograms();
-
-        for (Hologram hologram : HologramsAPI.getHolograms(this)) {
-            hologram.delete();
-        }
+        if(hologramHandler != null && hologramHandler.getImplementation() != null) hologramHandler.getImplementation().removeHolograms();
 
         if(databaseHandler != null) databaseHandler.getDatabase().close();
     }

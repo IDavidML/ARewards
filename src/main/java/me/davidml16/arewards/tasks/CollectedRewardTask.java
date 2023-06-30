@@ -44,11 +44,13 @@ public class CollectedRewardTask {
 						}
 
 						if(i > 0) {
-							Bukkit.getScheduler().runTask(main, () -> {
-								Player player = Bukkit.getPlayer(profile.getUuid());
-								if(player != null)
-									main.getHologramHandler().reloadHolograms(player);
-							});
+							if(main.getHologramHandler().getImplementation() != null) {
+								Bukkit.getScheduler().runTask(main, () -> {
+									Player player = Bukkit.getPlayer(profile.getUuid());
+									if (player != null)
+										main.getHologramHandler().getImplementation().reloadHolograms(player);
+								});
+							}
 						}
 
 					} catch (NullPointerException ignore) {}

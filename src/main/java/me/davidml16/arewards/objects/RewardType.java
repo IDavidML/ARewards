@@ -1,8 +1,9 @@
 package me.davidml16.arewards.objects;
 
+import com.cryptomorin.xseries.XItemStack;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.rewards.*;
-import me.davidml16.arewards.utils.XSeries.XItemStack;
+import me.davidml16.arewards.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -197,7 +198,7 @@ public class RewardType {
                     List<Item> items = ((ItemReward) reward).getItems();
                     config.set("type.rewards.reward_" + i + ".item", new ArrayList<>());
                     for (int j = 0; j < items.size(); j++) {
-                        XItemStack.serializeItem(items.get(j).getItemStack(), config, "type.rewards.reward_" + i + ".item.item_" + j);
+                        XItemStack.serialize(items.get(j).getItemStack(), Utils.getConfigurationSection(config, "type.rewards.reward_" + i + ".item.item_" + j));
                     }
                 }
 

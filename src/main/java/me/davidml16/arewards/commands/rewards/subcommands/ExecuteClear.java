@@ -66,7 +66,9 @@ public class ExecuteClear {
             sender.sendMessage(Utils.translate(msg));
 
             if (main.getRewardsGUI().getOpened().contains(target.getUniqueId())) main.getRewardsGUI().reloadPage(target);
-            main.getHologramHandler().reloadHolograms(target);
+
+            if(main.getHologramHandler().getImplementation() != null)
+                main.getHologramHandler().getImplementation().reloadHolograms(target);
 
             try {
                 main.getDatabaseHandler().removeRewardsCollected(target.getUniqueId());

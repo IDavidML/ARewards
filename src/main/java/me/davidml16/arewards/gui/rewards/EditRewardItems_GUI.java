@@ -1,12 +1,12 @@
 package me.davidml16.arewards.gui.rewards;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.RewardType;
 import me.davidml16.arewards.objects.rewards.*;
 import me.davidml16.arewards.utils.ItemBuilder;
 import me.davidml16.arewards.utils.Sounds;
 import me.davidml16.arewards.utils.Utils;
-import me.davidml16.arewards.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

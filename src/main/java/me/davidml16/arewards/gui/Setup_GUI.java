@@ -1,12 +1,12 @@
 package me.davidml16.arewards.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.arewards.Constants;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.conversation.RenameMenu;
 import me.davidml16.arewards.conversation.TypeIconMenu;
 import me.davidml16.arewards.objects.RewardType;
 import me.davidml16.arewards.utils.*;
-import me.davidml16.arewards.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;

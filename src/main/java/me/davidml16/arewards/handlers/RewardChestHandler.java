@@ -1,6 +1,5 @@
 package me.davidml16.arewards.handlers;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.RewardChest;
 import me.davidml16.arewards.utils.Utils;
@@ -45,7 +44,9 @@ public class RewardChestHandler {
     public void createChest(Location loc, double blockHeight) {
         RewardChest box = new RewardChest(loc.getWorld().getName(), loc, blockHeight);
         chests.put(loc, box);
-        main.getHologramHandler().loadHolograms(box);
+
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramHandler().getImplementation().loadHolograms(box);
 
         config.set("locations", new ArrayList<>());
 
@@ -66,10 +67,8 @@ public class RewardChestHandler {
         if(chests.containsKey(loc)) {
 
             RewardChest chest = getChestByLocation(loc);
-            for(Hologram holo : chest.getHolograms().values()) {
-                holo.delete();
-            }
-            chest.getHolograms().clear();
+            if(main.getHologramHandler().getImplementation() != null)
+                main.getHologramHandler().getImplementation().removeHolograms(chest);
 
             chests.remove(loc);
 

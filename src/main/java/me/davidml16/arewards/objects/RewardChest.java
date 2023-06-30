@@ -1,6 +1,5 @@
 package me.davidml16.arewards.objects;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -12,12 +11,10 @@ public class RewardChest {
     private Location location;
 
     private double blockHeight;
-    private HashMap<UUID, Hologram> holograms;
 
     public RewardChest(String worldName, Location location, double blockHeight) {
         this.worldName = worldName;
         this.location = location;
-        this.holograms = new HashMap<>();
         this.blockHeight = blockHeight;
     }
 
@@ -37,16 +34,11 @@ public class RewardChest {
 
     public void setBlockHeight(double blockHeight) { this.blockHeight = blockHeight; }
 
-    public HashMap<UUID, Hologram> getHolograms() {
-        return holograms;
-    }
-
     @Override
     public String toString() {
         return "RewardChest{" +
                 "location=" + location +
                 ", blockHeight=" + blockHeight +
-                ", holograms=" + holograms +
                 '}';
     }
 

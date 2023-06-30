@@ -15,8 +15,8 @@ public class HologramTask {
     class Task implements Runnable {
         @Override
         public void run() {
-            if(main.getPlayerCount() > 0)
-                main.getHologramHandler().reloadHolograms();
+            if(main.getPlayerCount() > 0 && main.getHologramHandler().getImplementation() != null)
+                main.getHologramHandler().getImplementation().reloadHolograms();
         }
     }
 

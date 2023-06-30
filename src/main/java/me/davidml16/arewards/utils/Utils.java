@@ -1,7 +1,9 @@
 package me.davidml16.arewards.utils;
 
-import me.davidml16.arewards.utils.XSeries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +107,14 @@ public class Utils {
 
     public static ColorSet<Integer, Integer, Integer> getRGBbyColor(ChatColor color) {
         return colorMap.get(color);
+    }
+
+    public static ConfigurationSection getConfigurationSection(Configuration config, String path) {
+        ConfigurationSection section = config.getConfigurationSection(path);
+
+        if(section == null) section = config.createSection(path);
+
+        return section;
     }
 
 }

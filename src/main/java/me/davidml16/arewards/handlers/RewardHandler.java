@@ -1,16 +1,14 @@
 package me.davidml16.arewards.handlers;
 
+import com.cryptomorin.xseries.XItemStack;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.rewards.*;
 import me.davidml16.arewards.objects.*;
-import me.davidml16.arewards.utils.NBTEditor;
 import me.davidml16.arewards.utils.Sounds;
-import me.davidml16.arewards.utils.RepeatingTask;
-import me.davidml16.arewards.utils.XSeries.XItemStack;
+import me.davidml16.arewards.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -58,7 +56,7 @@ public class RewardHandler {
 							if (config.contains("type.rewards." + rewardid + ".item")) {
 								if (config.getConfigurationSection("type.rewards." + rewardid + ".item") != null) {
 									for (String itemid : config.getConfigurationSection("type.rewards." + rewardid + ".item").getKeys(false)) {
-										items.add(new Item("item_" + iterator2, XItemStack.deserializeItem(config, "type.rewards." + rewardid + ".item." + itemid)));
+										items.add(new Item("item_" + iterator2, XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".item." + itemid))));
 										iterator2++;
 									}
 								}

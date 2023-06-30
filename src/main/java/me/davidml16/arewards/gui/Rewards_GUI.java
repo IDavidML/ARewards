@@ -1,5 +1,7 @@
 package me.davidml16.arewards.gui;
 
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.objects.GUILayout;
 import me.davidml16.arewards.objects.RewardCollected;
@@ -8,7 +10,6 @@ import me.davidml16.arewards.objects.Profile;
 import me.davidml16.arewards.objects.rewards.Reward;
 import me.davidml16.arewards.utils.*;
 import me.davidml16.arewards.utils.TimeAPI.TimeUtils;
-import me.davidml16.arewards.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -107,7 +108,8 @@ public class Rewards_GUI implements Listener {
             switch (Objects.requireNonNull(action)) {
                 case "claim":
                     main.getTransactionHandler().claimReward(p, rewardType, false);
-                    main.getHologramHandler().reloadHolograms(p);
+                    if(main.getHologramHandler().getImplementation() != null)
+                        main.getHologramHandler().getImplementation().removeHolograms(p);
                     open(p);
                     break;
                 case "vote":

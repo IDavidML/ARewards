@@ -3,7 +3,7 @@ package me.davidml16.arewards.conversation;
 import me.davidml16.arewards.Main;
 import me.davidml16.arewards.utils.Sounds;
 import me.davidml16.arewards.utils.Utils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;

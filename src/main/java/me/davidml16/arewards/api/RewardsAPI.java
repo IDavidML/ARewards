@@ -11,8 +11,9 @@ public class RewardsAPI {
     }
 
     public static void reloadHologramAnimation() {
+        if(main.getHologramHandler().getImplementation() == null) return;
         main.getHologramHandler().getColorAnimation().reset();
-        main.getHologramHandler().reloadHolograms();
+        main.getHologramHandler().getImplementation().reloadHolograms();
     }
 
 }

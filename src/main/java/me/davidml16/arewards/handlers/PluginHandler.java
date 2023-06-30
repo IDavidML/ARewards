@@ -26,11 +26,15 @@ public class PluginHandler {
 
         main.setLoginReminder(main.getConfig().getBoolean("LoginReminder"));
 
-        main.getHologramTask().stop();
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramTask().stop();
+
         main.getCollectedRewardTask().stop();
         main.getLiveGuiTask().stop();
 
-        main.getHologramHandler().removeHolograms();
+        if(main.getHologramHandler().getImplementation() != null)
+            main.getHologramHandler().getImplementation().removeHolograms();
+
         main.getLanguageHandler().pushMessages();
         main.getRewardChestHandler().loadChests();
         main.getRewardTypeHandler().loadTypes();
@@ -39,14 +43,18 @@ public class PluginHandler {
         main.getSetupGUI().reloadAllGUI();
         main.getEditRewardsGUI().reloadAllGUI();
         main.getEditSettingsGUI().reloadAllGUI();
-        main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
-        main.getHologramHandler().loadHolograms();
 
-        main.getHologramTask().start();
+        if(main.getHologramHandler().getImplementation() != null) {
+            main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
+            main.getHologramHandler().getImplementation().loadHolograms();
+            main.getHologramTask().start();
+        }
+
         main.getCollectedRewardTask().start();
 
         if(main.isLiveGuiUpdates())
             main.getLiveGuiTask().start();
+
     }
 
 }
