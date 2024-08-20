@@ -29,14 +29,6 @@ public class Event_JoinQuit implements Listener {
 
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
-
-        if(p.getName().equalsIgnoreCase("DavidML16")) {
-            Bukkit.getScheduler().runTaskLater(main, () -> {
-                PluginDescriptionFile pdf = main.getDescription();
-                p.sendMessage(Utils.translate("&aServer using ARewards. Version: &e" + pdf.getVersion()));
-            }, 40L);
-        }
-
     }
 
     @EventHandler
